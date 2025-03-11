@@ -1,0 +1,1027 @@
+SECTION A
+/* Write the SQL statements in order to create the tables for the database. 
+Use the Entity Relationship Diagram (ERD) of the database shown in Figure 1. 
+For simplicity, we are assuming in this project that a book cannot be written 
+by more than one author. You need to create the tables as well as the required 
+constraints, including the keys (primary & foreign), & the relationships between tables. */
+
+-- Ensure no library database pre exists
+DROP DATABASE IF EXISTS library;
+-- Create library database
+CREATE DATABASE library;
+-- Specify database to command all subsequent SQL statements
+USE library;
+-- Create Author Table
+CREATE TABLE Author (
+    AuthorID INT PRIMARY KEY AUTO_INCREMENT,
+    AuthorFirstName VARCHAR(50) NOT NULL,
+    AuthorLastName VARCHAR(50) NOT NULL,
+    AuthorNationality VARCHAR(50) NOT NULL
+);
+-- Create Book Table
+CREATE TABLE Book (
+    BookID INT PRIMARY KEY AUTO_INCREMENT,
+    BookTitle VARCHAR(100) NOT NULL,
+    Genre VARCHAR(50) NOT NULL,
+    AuthorID INT,
+    FOREIGN KEY (AuthorID) REFERENCES Author(AuthorID)
+);
+-- Create Client Table
+CREATE TABLE Client (
+    ClientID INT PRIMARY KEY AUTO_INCREMENT,
+    ClientFirstName VARCHAR(50) NOT NULL,
+    ClientLastName VARCHAR(50) NOT NULL,
+    ClientDOB YEAR NOT NULL,
+    Occupation VARCHAR(50) NOT NULL
+);
+-- Create Borrower Table
+CREATE TABLE Borrower (
+    BorrowerID INT PRIMARY KEY AUTO_INCREMENT,
+    ClientID INT,
+    BookID INT,
+    BorrowDate DATE NOT NULL,
+    FOREIGN KEY (BookID) REFERENCES Book(BookID),
+    FOREIGN KEY (ClientID) REFERENCES Client(ClientID)
+);
+
+-- SECTION B. Populate database with sample set of data given into tables created
+
+--Populate Author Table
+INSERT INTO Author (AuthorFirstName, AuthorLastName, AuthorNationality) 
+VALUES ('Sofia', 'Smith', 'Canada'),
+('Maria', 'Brown', 'Brazil'),
+('Elena', 'Martin', 'Mexico'),
+('Zoe', 'Roy', 'France'),
+('Sebastian', 'Lavoie', 'Canada'),
+('Dylan', 'Garcia', 'Spain'),
+('Ian', 'Cruz', 'Mexico'),
+('Lucas', 'Smith', 'USA'),
+('Fabian', 'Wilson', 'USA'),
+('Liam', 'Taylor', 'Canada'),
+('William', 'Thomas', 'Great Britain'),
+('Logan', 'Moore', 'Canada'),
+('Oliver', 'Martin', 'France'),
+('Alysha', 'Thompson', 'Canada'),
+('Isabelle', 'Lee', 'Canada'),
+('Emily', 'Clark', 'USA'),
+('John', 'Young', 'China'),
+('David', 'Wright', 'Canada'),
+('Thomas','Scott','Canada'),
+('Helena', 'Adams', 'Canada'),
+('Sofia', 'Carter', 'USA'),
+('Liam', 'Parker', 'Canada'),
+('Emily', 'Murphy', 'USA');
+
+--Populate Book Table
+INSERT INTO Book (BookTitle, AuthorID, Genre)
+VALUES ('Build your database system', 1, 'Science'),
+('The red wall', 2, 'Fiction'),
+('The perfect match', 3, 'Fiction'),
+('Digital Logic', 4, 'Science'),
+('How to be a great lawyer', 5, 'Law'),
+('Manage successful negotiations', 6, 'Society'),
+('Pollution today', 7, 'Science'),
+('A gray park', 2, 'Fiction'),
+('How to be rich in one year', 8, 'Humor'),
+('Their bright fate', 9, 'Fiction'),
+('Black lines', 10, 'Fiction'),
+('History of theater', 11, 'Literature'),
+('Electrical transformers', 12, 'Science'),
+('Build your big data system', 1, 'Science'),
+('Right and left', 13, 'Children'),
+('Programming using Python', 1, 'Science'),
+('Computer networks', 14, 'Science'),
+('Performance evaluation', 15, 'Science'),
+('Daily exercise', 16, 'Well being'),
+('The silver uniform', 17, 'Fiction'),
+('Industrial revolution', 18, 'History'),
+('Green nature', 19, 'Well being'),
+('Perfect football', 20, 'Well being'),
+('The chocolate love', 21, 'Humor'),
+('Director and leader', 22, 'Society'),
+('Play football every week', 20, 'Well being'),
+('Maya the bee', 13, 'Children'),
+('Perfect rugby', 20, 'Well being'),
+('The end', 23, 'Fiction'),
+('Computer security', 1, 'Science'),
+('Participate', 22, 'Society'),
+('Positive figures', 3, 'Fiction');
+
+--Populate Client Table
+INSERT INTO Client (ClientFirstName, ClientLastName, ClientDOB, Occupation)
+VALUES ('Kaiden', 'Hill', 2006, 'Student'),
+('Alina', 'Morton', 2010, 'Student'),
+('Fania', 'Brooks', 1983, 'Food Scientist'),
+('Courtney', 'Jensen', 2006, 'Student'),
+('Brittany', 'Hill', 1983, 'Firefighter'),
+('Max', 'Rogers', 2005, 'Student'),
+('Margaret', 'McCarthy', 1981, 'School Psychologist'),
+('Julie', 'McCarthy', 1973, 'Professor'),
+('Ken', 'McCarthy', 1974, 'Securities Clerk'),
+('Britany', 'O''Quinn', 1984, 'Violinist'),
+('Conner', 'Gardner', 1998, 'Licensed Massage Therapist'),
+('Mya', 'Austin', 1960, 'Parquet Floor Layer'),
+('Thierry', 'Rogers', 2004, 'Student'),
+('Eloise', 'Rogers', 1984, 'Computer Security Manager'),
+('Gerard', 'Jackson', 1979, 'Oil Exploration Engineer'),
+('Randy', 'Day', 1986, 'Aircraft Electrician'),
+('Jodie', 'Page', 1990, 'Manufacturing Director'),
+('Coral', 'Rice', 1996, 'Window Washer'),
+('Ayman', 'Austin', 2002, 'Student'),
+('Jaxson', 'Austin', 1999, 'Repair Worker'),
+('Joel', 'Austin', 1973, 'Police Officer'),
+('Alina', 'Austin', 2010, 'Student'),
+('Elin', 'Austin', 1962, 'Payroll Clerk'),
+('Ophelia', 'Wolf', 2004, 'Student'),
+('Eliot', 'McGuire', 1967, 'Dentist'),
+('Peter', 'McKinney', 1968, 'Professor'),
+('Annabella', 'Henry', 1974, 'Nurse'),
+('Anastasia', 'Baker', 2001, 'Student'),
+('Tyler', 'Baker', 1984, 'Police Officer'),
+('Lilian', 'Ross', 1983, 'Insurance Agent'),
+('Thierry', 'Arnold', 1975, 'Bus Driver'),
+('Angelina', 'Rowe', 1979, 'Firefighter'),
+('Marcia', 'Rowe', 1974, 'Health Educator'),
+('Martin', 'Rowe', 1976, 'Ship Engineer'),
+('Adeline', 'Rowe', 2005, 'Student'),
+('Colette', 'Rowe', 1963, 'Professor'),
+('Diane', 'Clark', 1975, 'Payroll Clerk'),
+('Caroline', 'Clark', 1960, 'Dentist'),
+('Dalton', 'Clayton', 1982, 'Police Officer'),
+('Steve', 'Clayton', 1990, 'Bus Driver'),
+('Melanie', 'Clayton', 1987, 'Computer Engineer'),
+('Alana', 'Wilson', 2007, 'Student'),
+('Carson', 'Byrne', 1995, 'Food Scientist'),
+('Conrad', 'Byrne', 2007, 'Student'),
+('Ryan', 'Porter', 2008, 'Student'),
+('Elin', 'Porter', 1978, 'Computer Programmer'),
+('Tyler', 'Harvey', 2007, 'Student'),
+('Arya', 'Harvey', 2008, 'Student'),
+('Serena', 'Harvey', 1978, 'School Teacher'),
+('Lilly', 'Franklin', 1976, 'Doctor'),
+('Mai', 'Franklin', 1994, 'Dentist'),
+('John', 'Franklin', 1999, 'Firefighter'),
+('Judy', 'Franklin', 1995, 'Firefighter'),
+('Katy', 'Lloyd', 1992, 'School Teacher'),
+('Tamara', 'Allen', 1963, 'Ship Engineer'),
+('Maxim', 'Lyons', 1985, 'Police Officer'),
+('Allan', 'Lyons', 1983, 'Computer Engineer'),
+('Marc', 'Harris', 1980, 'School Teacher'),
+('Elin', 'Young', 2009, 'Student'),
+('Diana', 'Young', 2008, 'Student'),
+('Diane', 'Young', 2006, 'Student'),
+('Alana', 'Bird', 2003, 'Student'),
+('Anna', 'Becker', 1979, 'Security Agent'),
+('Katie', 'Grant', 1977, 'Manager'),
+('Joan', 'Grant', 2010, 'Student'),
+('Bryan', 'Bell', 2001, 'Student'),
+('Belle', 'Miller', 1970, 'Professor'),
+('Peggy', 'Stevens', 1990, 'Bus Driver'),
+('Steve', 'Williamson', 1975, 'HR Clerk'),
+('Tyler', 'Williamson', 1999, 'Doctor'),
+('Izabelle', 'Williamson', 1990, 'Systems Analyst'),
+('Annabel', 'Williamson', 1960, 'Cashier'),
+('Mohamed', 'Waters', 1966, 'Insurance Agent'),
+('Marion', 'Newman', 1970, 'Computer Programmer'),
+('Ada', 'Williams', 1986, 'Computer Programmer'),
+('Sean', 'Scott', 1983, 'Bus Driver'),
+('Farrah', 'Scott', 1974, 'Ship Engineer'),
+('Christine', 'Lambert', 1973, 'School Teacher'),
+('Alysha', 'Lambert', 2007, 'Student'),
+('Maia', 'Grant', 1984, 'School Teacher');
+
+-- Populate Borrower Table
+INSERT INTO Borrower (ClientID, BookID, BorrowDate)
+VALUES (35,17,'2016-07-20'),
+(1,3,'2017-04-19'),
+(42,8,'2016-10-03'),
+(62,16,'2016-04-05'),
+(53,13,'2017-01-17'),
+(33,15,'2015-11-26'),
+(40,14,'2015-01-21'),
+(64,2,'2017-09-10'),
+(56,30,'2017-08-02'),
+(23,2,'2018-06-28'),
+(46,19,'2015-11-18'),
+(61,20,	'2015-11-24'),
+(58,7,'2017-06-17'),
+(46,16,'2017-02-12'),
+(80,21,'2018-03-18'),
+(51,23,'2015-09-01'),
+(49,18,	'2015-07-28'),
+(43,18,	'2015-11-04'),
+(30,2,	'2018-08-10'),
+(48,24,	'2015-05-13'),
+(71,5,	'2016-09-05'),
+(35,3,	'2016-07-03'),
+(57,1,	'2015-03-17'),
+(23,25,	'2017-08-16'),
+(20,12,	'2018-07-24'),
+(25,7,'2015-01-31'),
+(72,29,'2016-04-10'),
+(74,20,	'2017-07-31'),
+(53,14,	'2016-02-20'),
+(32,10,	'2017-07-24'),
+(12,15,	'2018-04-25'),
+(77,13,	'2017-06-09'),
+(30,4,	'2017-10-24'),
+(37,24,	'2016-01-14'),
+(27,26,'2017-06-05'),
+(1,16,'2018-05-06'),
+(21,9,'2016-03-19'),
+(69,28,	'2017-03-29'),
+(17,19,	'2017-03-14'),
+(8,9,'2016-04-22'),
+(63,18,	'2015-01-25'),
+(65,20,	'2016-10-10'),
+(51,19,	'2015-07-28'),
+(23,12,	'2017-01-25'),
+(17,4,'2017-04-18'),
+(68,5,'2016-09-06'),
+(46,13,	'2017-09-30'),
+(15,13,	'2017-07-05'),
+(11,19,	'2017-12-14'),
+(78,15,	'2017-01-26'),
+(47,9,'2015-03-03'),
+(68,7,'2016-05-26'),
+(37,26,	'2017-02-06'),
+(48,27,	'2015-12-30'),
+(9,21,'2017-10-21'),
+(29,8,'2018-04-01'),
+(64,18,'2017-08-29'),
+(61,26,	'2018-02-21'),
+(39,28,	'2016-07-26'),
+(73,18,	'2018-08-22'),
+(11,13,	'2018-01-17'),
+(45,6,'2016-07-20'),
+(33,13,	'2018-03-18'),
+(10,17,'2016-06-06'),
+(28,18,	'2017-02-17'),
+(51,3,'2016-12-09'),
+(29,2,	'2015-09-18'),
+(28,30,	'2017-09-14'),
+(74,20,'2015-12-12'),
+(15,22,	'2015-01-14'),
+(57,8,	'2017-08-20'),
+(2,5,'2015-01-18'),
+(74,12,	'2018-04-14'),
+(51,10,	'2016-02-25'),
+(25,17,	'2015-02-24'),
+(45,21,	'2017-02-10'),
+(27,25,	'2016-08-03'),
+(32,28,	'2016-06-15'),
+(71,21,	'2017-05-21'),
+(75,26,'2016-05-03'),
+(56,32,	'2015-12-23'),
+(26,32,	'2015-05-16'),
+(66,32,'2015-05-30'),
+(57,18,	'2017-09-15'),
+(40,15,	'2016-09-02'),
+(65,4,'2017-08-17'),
+(54,7,'2015-12-19'),
+(29,4,	'2017-07-22'),
+(44,9,	'2017-12-31'),
+(56,31,	'2015-06-13'),
+(17,4,'2015-04-01'),
+(35,16,	'2018-07-19'),
+(22,18,	'2017-06-22'),
+(39,24,	'2015-05-29'),
+(63,14,	'2018-01-20'),
+(53,21,	'2016-07-31'),
+(40,9,'2016-07-10'),
+(52,4,'2017-04-05'),
+(27,20,	'2016-09-04'),
+(72,29,	'2015-12-06'),
+(49,16,	'2017-12-19'),
+(6,12,	'2016-12-04'),
+(74,31,	'2016-07-27'),
+(48,32,	'2016-06-29'),
+(69,2,	'2016-12-27'),
+(60,32,	'2017-10-29'),
+(45,22,	'2017-06-12'),
+(42,15,	'2017-05-14'),
+(79,8,	'2016-10-13'),
+(70,18,	'2016-12-04'),
+(34,8,	'2016-03-06'),
+(43,8,	'2015-12-19'),
+(42,32,	'2016-04-20'),
+(67,5,	'2017-03-06'),
+(80,25,	'2015-06-23'),
+(54,11,	'2017-05-03'),
+(34,28,	'2017-08-30'),
+(65,20,	'2017-08-26'),
+(61,19,	'2018-01-05'),
+(38,12,	'2018-01-17'),
+(51,4,	'2016-05-13'),
+(7,16,'2016-03-17'),
+(46,16,'2016-11-25'),
+(75,30,	'2018-08-12'),
+(72,32,'2015-03-12'),
+(44,17,	'2015-06-15'),
+(68,15,	'2016-02-21'),
+(21,1,	'2016-06-19'),
+(14,25,	'2016-10-10'),
+(68,21,	'2016-05-27'),
+(35,20,	'2015-03-19'),
+(16,27,	'2016-08-08'),
+(79,31,	'2018-03-07'),
+(14,17,	'2018-04-28'),
+(29,28,	'2018-03-11'),
+(41,4,	'2018-08-08'),
+(42,3,	'2016-02-23'),
+(45,3,	'2017-07-10'),
+(36,16,	'2018-07-19'),
+(36,30,	'2015-08-07'),
+(54,32,	'2018-03-14'),
+(61,15,	'2017-03-28'),
+(1,13,	'2018-05-17'),
+(43,1,	'2015-05-14'),
+(37,14,	'2015-07-30'),
+(62,17,	'2015-09-19'),
+(50,22,	'2016-12-02'),
+(45,1,	'2016-07-24'),
+(32,17,	'2018-03-10'),
+(13,28,	'2016-02-14'),
+(15,9,	'2018-08-11'),
+(10,19,'2018-08-29'),
+(66,3,	'2016-11-27'),
+(68,29,	'2017-07-12'),
+(21,14,	'2018-06-27'),
+(35,9,	'2016-01-22'),
+(17,24,	'2016-08-25'),
+(40,21,	'2015-07-09'),
+(1,24,	'2016-03-28'),
+(70,27,	'2015-07-10'),
+(80,26,	'2016-04-24'),
+(29,5,	'2015-10-18'),
+(76,12,'2018-04-25'),
+(22,4,	'2016-12-24'),
+(2,2,'2017-10-26'),
+(35,13,	'2016-02-28'),
+(40,8,	'2017-10-02'),
+(68,9,	'2016-01-03'),
+(32,5,	'2016-11-13'),
+(34,17,	'2016-09-15'),
+(34,16,	'2018-04-13'),
+(80,30,	'2016-10-13'),
+(20,32,	'2015-11-17'),
+(36,10,	'2017-09-01'),
+(78,12,	'2018-06-27'),
+(57,8,	'2016-03-22'),
+(75,11,	'2017-06-27'),
+(71,10,	'2015-08-01'),
+(48,22,	'2015-09-29'),
+(19,16,	'2016-02-21'),
+(79,30,	'2018-08-20'),
+(70,13,	'2016-09-16'),
+(30,6,	'2017-02-10'),
+(45,12,	'2017-10-12'),
+(30,27,	'2016-11-23'),
+(26,3,	'2016-08-13'),
+(66,6,	'2017-01-14'),
+(47,15,	'2016-02-10'),
+(53,30,	'2018-08-08'),
+(80,16,	'2016-03-31'),
+(70,13,	'2018-02-03'),
+(14,25,	'2016-03-27'),
+(46,22,	'2016-01-13'),
+(30,32,	'2015-08-06'),
+(60,14,	'2016-11-27'),
+(14,13,	'2018-05-23'),
+(71,15,	'2016-06-22'),
+(38,21,	'2015-12-27'),
+(69,30,	'2017-04-29'),
+(49,31,	'2018-06-03'),
+(28,28,	'2015-05-29'),
+(49,3,	'2016-08-30'),
+(75,1,	'2015-10-29'),
+(78,3,	'2017-05-12'),
+(43,18,	'2015-03-25'),
+(27,21,	'2016-02-22'),
+(64,22,	'2015-04-03'),
+(21,11,	'2017-12-09'),
+(66,29,	'2016-12-20'),
+(45,13,	'2017-04-15'),
+(48,30,	'2015-01-31'),
+(20,25,	'2017-12-20'),
+(41,20,	'2018-01-29'),
+(51,12,'2015-07-05'),
+(5,1,'2015-04-12'),
+(40,3,	'2018-02-24'),
+(79,4,	'2018-06-27'),
+(15,10,	'2016-11-01'),
+(42,22,	'2016-12-28'),
+(17,9,	'2018-01-29'),
+(38,13,	'2016-05-09'),
+(79,2,	'2017-12-06'),
+(74,3,	'2015-12-07'),
+(46,8,	'2016-06-05'),
+(78,22,	'2018-08-11'),
+(45,2,	'2015-04-20'),
+(72,31,	'2015-11-11'),
+(18,17,	'2015-03-21'),
+(29,3,	'2017-08-13'),
+(66,11,	'2018-06-05'),
+(36,16,	'2016-04-28'),
+(26,2,	'2016-10-23'),
+(32,1,	'2017-10-31'),
+(62,14,	'2017-07-25'),
+(12,4,	'2015-07-08'),
+(38,32,'2015-02-24'),
+(29,16,	'2016-07-28'),
+(36,25,	'2017-05-07'),
+(76,7,	'2015-06-13'),
+(28,16,	'2016-08-15'),
+(60,13,	'2016-08-26'),
+(8,3,'2017-07-28'),
+(25,1,	'2016-07-30'),
+(62,29,	'2018-08-24'),
+(51,8,	'2016-09-01'),
+(27,23,	'2015-02-08'),
+(69,12,	'2018-06-25'),
+(51,12,	'2015-07-04'),
+(7,4,	'2015-05-01'),
+(31,15,	'2017-10-29'),
+(14,23,	'2015-01-15'),
+(14,1,	'2018-05-21'),
+(39,25,'2015-12-26'),
+(79,24,	'2016-05-31'),
+(40,15,'2016-03-18'),
+(51,13,	'2018-04-13'),
+(61,1,	'2015-02-11'),
+(15,24,	'2018-03-02'),
+(10,22,	'2018-01-21'),
+(67,10,	'2017-07-08'),
+(79,11,	'2016-12-11'),
+(19,32,	'2016-05-04'),
+(35,11,	'2017-08-01'),
+(27,13,	'2017-12-15'),
+(30,22,	'2015-12-22'),
+(8,7,'2015-06-26'),
+(70,9,	'2016-03-20'),
+(56,18,	'2016-01-29'),
+(13,19,	'2015-03-06'),
+(61,2,	'2016-06-18'),
+(47,13,	'2017-09-18'),
+(30,22,	'2016-02-19'),
+(18,22,	'2016-12-31'),
+(34,29,	'2017-10-27'),
+(32,21,	'2015-06-03'),
+(9,28,	'2016-03-30'),
+(62,24,	'2015-03-23'),
+(44,22,	'2017-04-29'),
+(27,5,	'2015-03-25'),
+(61,28,	'2017-07-14'),
+(5,13,	'2016-12-04'),
+(43,19,	'2018-03-15'),
+(34,19,	'2016-06-05'),
+(35,5,'2018-02-19'),
+(13,12,	'2016-09-23'),
+(74,18,	'2016-12-26'),
+(70,31,	'2017-08-15'),
+(42,17,	'2016-06-15'),
+(51,24,	'2018-07-30'),
+(45,30,	'2015-01-15'),
+(70,17,	'2017-10-07'),
+(77,7,	'2017-01-06'),
+(74,25,'2015-09-25'),
+(47,14,'2018-02-01'),
+(10,2,'2017-04-18'),
+(16,21,'2016-10-03'),
+(48,5,'2016-09-17'),
+(72,3,'2017-02-10'),
+(26,23,'2016-03-01'),
+(49,23,'2016-10-25');
+
+--SECTION C
+-- Create indexes to improve query performance
+CREATE INDEX idx_borrower_clientid ON Borrower (ClientID);
+CREATE INDEX idx_borrower_bookid ON Borrower (BookID);
+CREATE INDEX idx_book_authorid ON Book (AuthorID);
+
+OUTPUT 
+mysql> CREATE INDEX idx_borrower_clientid ON Borrower (ClientID);
+Query OK, 0 rows affected (0.45 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> CREATE INDEX idx_borrower_bookid ON Borrower (BookID);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> CREATE INDEX idx_book_authorid ON Book (AuthorID);
+Query OK, 0 rows affected (0.15 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+-- 1. Display all contents of the Clients table
+/*Pulls all (*) rows and columns from the Client table */
+SELECT * FROM Client;
+
+OUTPUT 
+ ClientID | ClientFirstName | ClientLastName | ClientDOB | Occupation                 |
++----------+-----------------+----------------+-----------+----------------------------+
+|        1 | Kaiden          | Hill           |      2006 | Student                    |
+|        2 | Alina           | Morton         |      2010 | Student                    |
+|        3 | Fania           | Brooks         |      1983 | Food Scientist             |
+|        4 | Courtney        | Jensen         |      2006 | Student                    |
+|        5 | Brittany        | Hill           |      1983 | Firefighter                |
+|        6 | Max             | Rogers         |      2005 | Student                    |
+|        7 | Margaret        | McCarthy       |      1981 | School Psychologist        |
+|        8 | Julie           | McCarthy       |      1973 | Professor                  |
+|        9 | Ken             | McCarthy       |      1974 | Securities Clerk           |
+|       10 | Britany         | O'Quinn        |      1984 | Violinist                  |
+|       11 | Conner          | Gardner        |      1998 | Licensed Massage Therapist |
+|       12 | Mya             | Austin         |      1960 | Parquet Floor Layer        |
+|       13 | Thierry         | Rogers         |      2004 | Student                    |
+|       14 | Eloise          | Rogers         |      1984 | Computer Security Manager  |
+|       15 | Gerard          | Jackson        |      1979 | Oil Exploration Engineer   |
+|       16 | Randy           | Day            |      1986 | Aircraft Electrician       |
+|       17 | Jodie           | Page           |      1990 | Manufacturing Director     |
+|       18 | Coral           | Rice           |      1996 | Window Washer              |
+|       19 | Ayman           | Austin         |      2002 | Student                    |
+|       20 | Jaxson          | Austin         |      1999 | Repair Worker              |
+|       21 | Joel            | Austin         |      1973 | Police Officer             |
+|       22 | Alina           | Austin         |      2010 | Student                    |
+|       23 | Elin            | Austin         |      1962 | Payroll Clerk              |
+|       24 | Ophelia         | Wolf           |      2004 | Student                    |
+|       25 | Eliot           | McGuire        |      1967 | Dentist                    |
+|       26 | Peter           | McKinney       |      1968 | Professor                  |
+|       27 | Annabella       | Henry          |      1974 | Nurse                      |
+|       28 | Anastasia       | Baker          |      2001 | Student                    |
+|       29 | Tyler           | Baker          |      1984 | Police Officer             |
+|       30 | Lilian          | Ross           |      1983 | Insurance Agent            |
+|       31 | Thierry         | Arnold         |      1975 | Bus Driver                 |
+|       32 | Angelina        | Rowe           |      1979 | Firefighter                |
+|       33 | Marcia          | Rowe           |      1974 | Health Educator            |
+|       34 | Martin          | Rowe           |      1976 | Ship Engineer              |
+|       35 | Adeline         | Rowe           |      2005 | Student                    |
+|       36 | Colette         | Rowe           |      1963 | Professor                  |
+|       37 | Diane           | Clark          |      1975 | Payroll Clerk              |
+|       38 | Caroline        | Clark          |      1960 | Dentist                    |
+|       39 | Dalton          | Clayton        |      1982 | Police Officer             |
+|       40 | Steve           | Clayton        |      1990 | Bus Driver                 |
+|       41 | Melanie         | Clayton        |      1987 | Computer Engineer          |
+|       42 | Alana           | Wilson         |      2007 | Student                    |
+|       43 | Carson          | Byrne          |      1995 | Food Scientist             |
+|       44 | Conrad          | Byrne          |      2007 | Student                    |
+|       45 | Ryan            | Porter         |      2008 | Student                    |
+|       46 | Elin            | Porter         |      1978 | Computer Programmer        |
+|       47 | Tyler           | Harvey         |      2007 | Student                    |
+|       48 | Arya            | Harvey         |      2008 | Student                    |
+|       49 | Serena          | Harvey         |      1978 | School Teacher             |
+|       50 | Lilly           | Franklin       |      1976 | Doctor                     |
+|       51 | Mai             | Franklin       |      1994 | Dentist                    |
+|       52 | John            | Franklin       |      1999 | Firefighter                |
+|       53 | Judy            | Franklin       |      1995 | Firefighter                |
+|       54 | Katy            | Lloyd          |      1992 | School Teacher             |
+|       55 | Tamara          | Allen          |      1963 | Ship Engineer              |
+|       56 | Maxim           | Lyons          |      1985 | Police Officer             |
+|       57 | Allan           | Lyons          |      1983 | Computer Engineer          |
+|       58 | Marc            | Harris         |      1980 | School Teacher             |
+|       59 | Elin            | Young          |      2009 | Student                    |
+|       60 | Diana           | Young          |      2008 | Student                    |
+|       61 | Diane           | Young          |      2006 | Student                    |
+|       62 | Alana           | Bird           |      2003 | Student                    |
+|       63 | Anna            | Becker         |      1979 | Security Agent             |
+|       64 | Katie           | Grant          |      1977 | Manager                    |
+|       65 | Joan            | Grant          |      2010 | Student                    |
+|       66 | Bryan           | Bell           |      2001 | Student                    |
+|       67 | Belle           | Miller         |      1970 | Professor                  |
+|       68 | Peggy           | Stevens        |      1990 | Bus Driver                 |
+|       69 | Steve           | Williamson     |      1975 | HR Clerk                   |
+|       70 | Tyler           | Williamson     |      1999 | Doctor                     |
+|       71 | Izabelle        | Williamson     |      1990 | Systems Analyst            |
+|       72 | Annabel         | Williamson     |      1960 | Cashier                    |
+|       73 | Mohamed         | Waters         |      1966 | Insurance Agent            |
+|       74 | Marion          | Newman         |      1970 | Computer Programmer        |
+|       75 | Ada             | Williams       |      1986 | Computer Programmer        |
+|       76 | Sean            | Scott          |      1983 | Bus Driver                 |
+|       77 | Farrah          | Scott          |      1974 | Ship Engineer              |
+|       78 | Christine       | Lambert        |      1973 | School Teacher             |
+|       79 | Alysha          | Lambert        |      2007 | Student                    |
+|       80 | Maia            | Grant          |      1984 | School Teacher             |
++----------+-----------------+----------------+-----------+----------------------------+
+
+-- 2. First names, last names, ages and occupations of all clients
+/* YEAR(CURDATE()) - ClientDOB calculates the age of the client and returns the column name as Age */
+SELECT ClientFirstName, ClientLastName, YEAR(CURDATE()) - ClientDOB AS Age, Occupation 
+FROM Client;
+
+OUTPUT 
++-----------------+----------------+------+----------------------------+
+| ClientFirstName | ClientLastName | Age  | Occupation                 |
++-----------------+----------------+------+----------------------------+
+| Kaiden          | Hill           |   19 | Student                    |
+| Alina           | Morton         |   15 | Student                    |
+| Fania           | Brooks         |   42 | Food Scientist             |
+| Courtney        | Jensen         |   19 | Student                    |
+| Brittany        | Hill           |   42 | Firefighter                |
+| Max             | Rogers         |   20 | Student                    |
+| Margaret        | McCarthy       |   44 | School Psychologist        |
+| Julie           | McCarthy       |   52 | Professor                  |
+| Ken             | McCarthy       |   51 | Securities Clerk           |
+| Britany         | O'Quinn        |   41 | Violinist                  |
+| Conner          | Gardner        |   27 | Licensed Massage Therapist |
+| Mya             | Austin         |   65 | Parquet Floor Layer        |
+| Thierry         | Rogers         |   21 | Student                    |
+| Eloise          | Rogers         |   41 | Computer Security Manager  |
+| Gerard          | Jackson        |   46 | Oil Exploration Engineer   |
+| Randy           | Day            |   39 | Aircraft Electrician       |
+| Jodie           | Page           |   35 | Manufacturing Director     |
+| Coral           | Rice           |   29 | Window Washer              |
+| Ayman           | Austin         |   23 | Student                    |
+| Jaxson          | Austin         |   26 | Repair Worker              |
+| Joel            | Austin         |   52 | Police Officer             |
+| Alina           | Austin         |   15 | Student                    |
+| Elin            | Austin         |   63 | Payroll Clerk              |
+| Ophelia         | Wolf           |   21 | Student                    |
+| Eliot           | McGuire        |   58 | Dentist                    |
+| Peter           | McKinney       |   57 | Professor                  |
+| Annabella       | Henry          |   51 | Nurse                      |
+| Anastasia       | Baker          |   24 | Student                    |
+| Tyler           | Baker          |   41 | Police Officer             |
+| Lilian          | Ross           |   42 | Insurance Agent            |
+| Thierry         | Arnold         |   50 | Bus Driver                 |
+| Angelina        | Rowe           |   46 | Firefighter                |
+| Marcia          | Rowe           |   51 | Health Educator            |
+| Martin          | Rowe           |   49 | Ship Engineer              |
+| Adeline         | Rowe           |   20 | Student                    |
+| Colette         | Rowe           |   62 | Professor                  |
+| Diane           | Clark          |   50 | Payroll Clerk              |
+| Caroline        | Clark          |   65 | Dentist                    |
+| Dalton          | Clayton        |   43 | Police Officer             |
+| Steve           | Clayton        |   35 | Bus Driver                 |
+| Melanie         | Clayton        |   38 | Computer Engineer          |
+| Alana           | Wilson         |   18 | Student                    |
+| Carson          | Byrne          |   30 | Food Scientist             |
+| Conrad          | Byrne          |   18 | Student                    |
+| Ryan            | Porter         |   17 | Student                    |
+| Elin            | Porter         |   47 | Computer Programmer        |
+| Tyler           | Harvey         |   18 | Student                    |
+| Arya            | Harvey         |   17 | Student                    |
+| Serena          | Harvey         |   47 | School Teacher             |
+| Lilly           | Franklin       |   49 | Doctor                     |
+| Mai             | Franklin       |   31 | Dentist                    |
+| John            | Franklin       |   26 | Firefighter                |
+| Judy            | Franklin       |   30 | Firefighter                |
+| Katy            | Lloyd          |   33 | School Teacher             |
+| Tamara          | Allen          |   62 | Ship Engineer              |
+| Maxim           | Lyons          |   40 | Police Officer             |
+| Allan           | Lyons          |   42 | Computer Engineer          |
+| Marc            | Harris         |   45 | School Teacher             |
+| Elin            | Young          |   16 | Student                    |
+| Diana           | Young          |   17 | Student                    |
+| Diane           | Young          |   19 | Student                    |
+| Alana           | Bird           |   22 | Student                    |
+| Anna            | Becker         |   46 | Security Agent             |
+| Katie           | Grant          |   48 | Manager                    |
+| Joan            | Grant          |   15 | Student                    |
+| Bryan           | Bell           |   24 | Student                    |
+| Belle           | Miller         |   55 | Professor                  |
+| Peggy           | Stevens        |   35 | Bus Driver                 |
+| Steve           | Williamson     |   50 | HR Clerk                   |
+| Tyler           | Williamson     |   26 | Doctor                     |
+| Izabelle        | Williamson     |   35 | Systems Analyst            |
+| Annabel         | Williamson     |   65 | Cashier                    |
+| Mohamed         | Waters         |   59 | Insurance Agent            |
+| Marion          | Newman         |   55 | Computer Programmer        |
+| Ada             | Williams       |   39 | Computer Programmer        |
+| Sean            | Scott          |   42 | Bus Driver                 |
+| Farrah          | Scott          |   51 | Ship Engineer              |
+| Christine       | Lambert        |   52 | School Teacher             |
+| Alysha          | Lambert        |   18 | Student                    |
+| Maia            | Grant          |   41 | School Teacher             |
++-----------------+----------------+------+----------------------------+
+
+-- 3. First and last names of clients that borrowed books in March 2018
+/* Inner join is used to combine the Client and Borrower tables where the ClientID is the same in both tables. 
+MONTH(BorrowDate) = 3 AND YEAR(BorrowDate) = 2018 filters the results to only include rows where the BorrowDate is in March 2018 */
+SELECT ClientFirstName, ClientLastName
+FROM Client
+INNER JOIN Borrower
+ON Client.ClientID = Borrower.ClientID
+WHERE MONTH(BorrowDate) = 3 AND YEAR(BorrowDate) = 2018;
+
+OUTPUT 
++-----------------+----------------+
+| ClientFirstName | ClientLastName |
++-----------------+----------------+
+| Gerard          | Jackson        |
+| Tyler           | Baker          |
+| Angelina        | Rowe           |
+| Marcia          | Rowe           |
+| Carson          | Byrne          |
+| Katy            | Lloyd          |
+| Alysha          | Lambert        |
+| Maia            | Grant          |
++-----------------+----------------+
+
+-- 4. First and last names of the top 5 authors clients borrowed in 2017
+/* Inner join is used to combine the Author, Book, and Borrower tables where the AuthorID is the same in the Author and Book tables 
+and the BookID is the same in the Book and Borrower tables. Moreover, a Where clause is used to filter borrow date to only 2017 while
+grouping results by Author First and Last Name and sorting the results by the total count per Author in descending order, limiting the top 5 results */
+SELECT AuthorFirstName, AuthorLastName
+FROM Author
+INNER JOIN Book
+ON Author.AuthorID = Book.AuthorID
+INNER JOIN Borrower
+ON Book.BookID = Borrower.BookID
+WHERE YEAR(BorrowDate) = 2017
+GROUP BY AuthorFirstName, AuthorLastName
+ORDER BY COUNT(*) DESC
+LIMIT 5;
+
+OUTPUT 
++-----------------+----------------+
+| AuthorFirstName | AuthorLastName |
++-----------------+----------------+
+| Sofia           | Smith          |
+| Elena           | Martin         |
+| Logan           | Moore          |
+| Maria           | Brown          |
+| Zoe             | Roy            |
++-----------------+----------------+
+
+-- 5. Nationalities of the least 5 authors that clients borrowed during the years 2015-2017
+/* Inner join is used to combine the Author, Book, and Borrower tables where the AuthorID is the same in the Author and Book tables
+and the BookID is the same in the Book and Borrower tables. Moreover, a Where clause is used to filter borrow date between 2015-2017 while
+grouping by Authornationality and ordering by count of rows in ascending order limiting to the top 5 results */
+SELECT AuthorNationality
+FROM Author
+INNER JOIN Book
+ON Author.AuthorID = Book.AuthorID
+INNER JOIN Borrower
+ON Book.BookID = Borrower.BookID
+WHERE YEAR(BorrowDate) BETWEEN 2015 AND 2017
+GROUP BY AuthorNationality
+ORDER BY Count(*)
+LIMIT 5;
+
+OUTPUT 
++-------------------+
+| AuthorNationality |
++-------------------+
+| Spain             |
+| Great Britain     |
+| China             |
+| Brazil            |
+| France            |
++-------------------+
+
+-- 6. The book that was most borrowed during the years 2015-2017
+/* Inner join is used to combine the Book and Borrower tables where the BookID is the same in both tables.
+Moreover, a Where clause is used to filter borrow date between 2015-2017 while grouping by BookTitle and ordering
+by count of rows in descending order limiting to the top 1 result */
+SELECT BookTitle
+FROM Book
+INNER JOIN Borrower
+ON Book.BookID = Borrower.BookID
+WHERE YEAR(BorrowDate) BETWEEN 2015 AND 2017
+GROUP BY BookTitle
+ORDER BY COUNT(*) DESC
+LIMIT 1;
+
+OUTPUT 
++-------------------+
+| BookTitle         |
++-------------------+
+| The perfect match |
++-------------------+
+
+-- 7. Top borrowed genres for client born in years 1970-1980
+/* Inner join is used to combine the Book, Borrower, and Client tables where the BookID is the same in the Book and Borrower tables
+and the ClientID is the same in the Borrower and Client tables. Moreover, a Where clause is used to filter client date of birth between 1970-1980 while grouping
+by Genre and ordering by count of rows in descending order */
+SELECT Genre
+FROM Book
+INNER JOIN Borrower
+ON Book.BookID = Borrower.BookID
+INNER JOIN Client
+ON Borrower.ClientID = Client.ClientID
+WHERE ClientDOB BETWEEN 1970 AND 1980
+GROUP BY Genre
+ORDER BY COUNT(*) DESC;
+
+OUTPUT 
++------------+
+| Science    |
+| Fiction    |
+| Well being |
+| Humor      |
+| Society    |
+| History    |
+| Law        |
+| Children   |
+| Literature |
++------------+
+
+-- 8. Top 5 occupations that borrowed the most in 2016
+/* Inner join is used to combine the Client and Borrower tables where the ClientID is the same in both tables.
+Moreover, a Where clause is used to filter borrow date to only 2016 while grouping by Occupation and ordering by count of rows in descending order
+limiting the top 5 results */
+SELECT Occupation
+FROM Client
+INNER JOIN Borrower
+ON Client.ClientID = Borrower.ClientID
+WHERE YEAR(BorrowDate) = 2016
+GROUP BY Occupation
+ORDER BY COUNT(*) DESC
+LIMIT 5;
+
+OUTPUT 
++---------------------+
+| Occupation          |
++---------------------+
+| Student             |
+| Bus Driver          |
+| Computer Programmer |
+| Dentist             |
+| Firefighter         |
++---------------------+
+
+-- 9. Average number of borrowed books by job title
+/* Inner join is used to combine the Client and Borrower tables where the ClientID is the same in both tables.
+Moreover, a subquery is used to group by Occupation and ClientID to calculate the count of books borrowed by each client.
+The outer query then groups by Occupation and calculates the average number of borrowed books per occupation */
+SELECT Occupation, AVG(BorrowCount) AS AverageBorrowedBooks
+FROM (
+    SELECT Occupation, Client.ClientID, COUNT(*) AS BorrowCount
+    FROM Client
+    INNER JOIN Borrower ON Client.ClientID = Borrower.ClientID
+    GROUP BY Occupation, Client.ClientID
+) AS OccupationCounts
+GROUP BY Occupation;
+
+OUTPUT 
++----------------------------+----------------------+
+| Occupation                 | AverageBorrowedBooks |
++----------------------------+----------------------+
+| Student                    |               4.4211 |
+| Firefighter                |               3.2500 |
+| School Psychologist        |               2.0000 |
+| Professor                  |               3.5000 |
+| Securities Clerk           |               2.0000 |
+| Violinist                  |               4.0000 |
+| Licensed Massage Therapist |               2.0000 |
+| Parquet Floor Layer        |               2.0000 |
+| Computer Security Manager  |               6.0000 |
+| Oil Exploration Engineer   |               5.0000 |
+| Aircraft Electrician       |               2.0000 |
+| Manufacturing Director     |               5.0000 |
+| Window Washer              |               2.0000 |
+| Repair Worker              |               3.0000 |
+| Police Officer             |               4.5000 |
+| Payroll Clerk              |               3.0000 |
+| Dentist                    |               5.6667 |
+| Nurse                      |               7.0000 |
+| Insurance Agent            |               4.0000 |
+| Bus Driver                 |               4.0000 |
+| Health Educator            |               2.0000 |
+| Ship Engineer              |               4.0000 |
+| Computer Engineer          |               3.0000 |
+| Food Scientist             |               5.0000 |
+| Computer Programmer        |               5.6667 |
+| School Teacher             |               3.6000 |
+| Doctor                     |               4.0000 |
+| Security Agent             |               2.0000 |
+| Manager                    |               3.0000 |
+| HR Clerk                   |               4.0000 |
+| Systems Analyst            |               4.0000 |
+| Cashier                    |               5.0000 |
++----------------------------+----------------------+
+
+-- 10. Create a VIEW and display the titles that were borrowed by at least 20% of clients
+/* A view is created to store the results of the query that retrieves the BookTitle and the count of Borrower.BookID.
+The query then joins the Borrower and Book tables on the BookID, groups by BookTitle, and filters the results to only include
+books that were borrowed by at least 20% of clients. */
+CREATE VIEW BBB20POC AS -- To test, code SELECT * FROM BBB20POC;
+SELECT BookTitle, COUNT(Borrower.BookID) AS BorrowedTimes
+FROM Borrower
+INNER JOIN Book ON Borrower.BookID = Book.BookID
+GROUP BY BookTitle
+HAVING COUNT(Borrower.BookID) >= (0.2 * (SELECT COUNT(DISTINCT ClientID) FROM Borrower)
+);
+
+OUTPUT 
++-------------------------+---------------+
+| BookTitle               | BorrowedTimes |
++-------------------------+---------------+
+| Electrical transformers |            18 |
++-------------------------+---------------+
+
+
+-- 11. The top month of borrows in 2017
+/* A query is used to select the month and count of borrowers from the Borrower table where the borrow date is in 2017.
+The results are then grouped by month, ordered by the count of borrowers in descending order, and limited to the top 5 results. */
+SELECT MONTH(BorrowDate) AS Month, COUNT(BorrowerID) AS BorrowCount
+FROM Borrower
+WHERE YEAR(BorrowDate) = 2017
+GROUP BY MONTH(BorrowDate)
+ORDER BY COUNT(BorrowerID) DESC
+LIMIT 5;
+
+OUTPUT
++-------+-------------+
+| Month | BorrowCount |
++-------+-------------+
+|     7 |          10 |
+|     8 |          10 |
+|    10 |          10 |
+|     4 |           7 |
+|    12 |           7 |
++-------+-------------+
+
+-- 12. Average number of borrows by age
+/* A subquery is used to calculate the age of each client and the count of books borrowed by each client.
+The outer query then groups by age and calculates the average number of borrowed books per age group. */
+SELECT Age, AVG(BorrowCount) AS AverageBorrowedBooks
+FROM (
+    SELECT YEAR(CURDATE()) - ClientDOB AS Age, Client.ClientID, COUNT(*) AS BorrowCount
+    FROM Client
+    INNER JOIN Borrower ON Client.ClientID = Borrower.ClientID
+    GROUP BY Age, Client.ClientID
+) AS AgeCounts
+GROUP BY Age;
+
+OUTPUT 
++------+----------------------+
+| Age  | AverageBorrowedBooks |
++------+----------------------+
+|   19 |               5.5000 |
+|   15 |               2.3333 |
+|   42 |               3.7500 |
+|   20 |               4.5000 |
+|   44 |               2.0000 |
+|   52 |               3.6667 |
+|   51 |               3.2500 |
+|   41 |               5.5000 |
+|   27 |               2.0000 |
+|   65 |               3.6667 |
+|   21 |               3.0000 |
+|   46 |               4.3333 |
+|   39 |               3.0000 |
+|   35 |               5.5000 |
+|   29 |               2.0000 |
+|   23 |               2.0000 |
+|   26 |               3.6667 |
+|   63 |               3.0000 |
+|   58 |               3.0000 |
+|   57 |               4.0000 |
+|   24 |               4.5000 |
+|   50 |               2.6667 |
+|   49 |               3.5000 |
+|   62 |               5.0000 |
+|   43 |               3.0000 |
+|   38 |               2.0000 |
+|   18 |               5.0000 |
+|   30 |               4.5000 |
+|   17 |               6.0000 |
+|   47 |               5.5000 |
+|   31 |              10.0000 |
+|   33 |               3.0000 |
+|   40 |               4.0000 |
+|   45 |               1.0000 |
+|   22 |               5.0000 |
+|   48 |               3.0000 |
+|   55 |               4.5000 |
+|   59 |               1.0000 |
++------+----------------------+
+
+-- 13. The oldest and the youngest clients of the library
+/* Two queries are used to find the youngest and oldest clients by calculating the age of each client and ordering the results accordingly. */
+SELECT ClientFirstName, ClientLastName, YEAR(CURDATE()) - ClientDOB AS AgeOfYoungestClient
+FROM Client
+ORDER BY AgeOfYoungestClient ASC
+LIMIT 1;
+
+OUTPUT 
++-----------------+----------------+---------------------+
+| ClientFirstName | ClientLastName | AgeOfYoungestClient |
++-----------------+----------------+---------------------+
+| Alina           | Morton         |                  15 |
++-----------------+----------------+---------------------+
+
+SELECT ClientFirstName, ClientLastName, YEAR(CURDATE()) - ClientDOB AS AgeOfOldestClient
+FROM Client
+ORDER BY AgeOfOldestClient DESC
+LIMIT 1;
+
+OUTPUT 
++-----------------+----------------+-------------------+
+| ClientFirstName | ClientLastName | AgeOfOldestClient |
++-----------------+----------------+-------------------+
+| Mya             | Austin         |                65 |
++-----------------+----------------+-------------------+
+
+-- 14. First and last names of authors that wrote books in more than one genre
+/* Inner join is used to combine the Author and Book tables where the AuthorID is the same in both tables.
+The query then groups by AuthorFirstName and AuthorLastName, calculates the count of distinct genres for each author,
+and filters the results to only include authors who wrote books in more than one genre. */
+SELECT AuthorFirstName, AuthorLastName, COUNT(DISTINCT Genre) AS GenreCount
+FROM Author
+INNER JOIN Book
+ON Author.AuthorID = Book.AuthorID
+GROUP BY AuthorFirstName, AuthorLastName
+HAVING COUNT(DISTINCT Genre) > 1;
+
+OUTPUT 
+Empty set (0.01 sec)
