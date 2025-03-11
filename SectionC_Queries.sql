@@ -40,14 +40,16 @@ LIMIT 5;
 /* Inner join is used to combine the Author, Book, and Borrower tables where the AuthorID is the same in the Author and Book tables
 and the BookID is the same in the Book and Borrower tables. Moreover, a Where clause is used to filter borrow date between 2015-2017 while
 grouping by Authornationality and ordering by count of rows in ascending order limiting to the top 5 results */
-SELECT AuthorNationality
+-- revised SELECT ITEMS after initial submission and added Borrow count to visualize borrow amounts against nationality
+-- revised GROUPBY after initial submission and changed from authornationality
+SELECT AuthorNationality, COUNT(*) AS BorrowCount 
 FROM Author
 INNER JOIN Book
 ON Author.AuthorID = Book.AuthorID
 INNER JOIN Borrower
 ON Book.BookID = Borrower.BookID
 WHERE YEAR(BorrowDate) BETWEEN 2015 AND 2017
-GROUP BY AuthorNationality
+GROUP BY Author.AuthorID 
 ORDER BY Count(*)
 LIMIT 5;
 
@@ -144,11 +146,14 @@ SELECT ClientFirstName, ClientLastName, YEAR(CURDATE()) - ClientDOB AS AgeOfYoun
 FROM Client
 ORDER BY AgeOfYoungestClient ASC
 LIMIT 1;
-
 SELECT ClientFirstName, ClientLastName, YEAR(CURDATE()) - ClientDOB AS AgeOfOldestClient
 FROM Client
 ORDER BY AgeOfOldestClient DESC
 LIMIT 1;
+
+-- REVISED CODE AFTER INITIAL SUBMISSION
+SELECT YEAR(CURDATE()) - MIN(ClientDOB) AS AgeOfOldestClient, YEAR(CURDATE()) - MAX(ClientDOB) AS AgeOfYoungestClient
+FROM Client;
 
 -- 14. First and last names of authors that wrote books in more than one genre
 /* Inner join is used to combine the Author and Book tables where the AuthorID is the same in both tables.
